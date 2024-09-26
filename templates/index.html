@@ -68,35 +68,44 @@
     </div>
 
     <script>
-document.getElementById('orderForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
+        document.getElementById('orderForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
 
-    const productName = document.getElementById('productName').value;
-    const productQuantity = document.getElementById('productQuantity').value;
+            const productName = document.getElementById('productName').value;
+            const productQuantity = document.getElementById('productQuantity').value;
 
-    try {
-        const response = await fetch('/orders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                items: [{ product_id: productName, quantity: productQuantity }]
-            })
+            try {
+                const response = await fetch('https://clonewarehose-production.up.railway.app/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: "Pending",
+                        items: [
+                            {
+                                product_id: productName,
+                                quantity: productQuantity
+                            }
+                        ]
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('responseMessage').style.display = 'block';
+                    document.getElementById('responseMessage').innerText = 'Order submitted successfully!';
+                } else {
+                    document.getElementById('responseMessage').style.display = 'block';
+                    document.getElementById('responseMessage').innerText = 'Error: ' + data.detail;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('responseMessage').style.display = 'block';
+                document.getElementById('responseMessage').innerText = 'Failed to connect to the server.';
+            }
         });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            document.getElementById('responseMessage').innerText = 'Order submitted successfully!';
-        } else {
-            document.getElementById('responseMessage').innerText = 'Error: ' + data.detail;
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('responseMessage').innerText = 'Failed to connect to the server.';
-    }
-});
     </script>
 </body>
 </html>
