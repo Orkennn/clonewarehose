@@ -20,7 +20,7 @@ async def global_exception_handler(request: Request, exc: Exception):
     return templates.TemplateResponse("error.html", {"request": request, "error": str(exc)})
 
 
-@app.get("/", response_class=HTMLResponse)
+@app.post("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
