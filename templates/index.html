@@ -4,111 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warehouse Management</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
             margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
             padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         h1 {
+            text-align: center;
             color: #333;
         }
         form {
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        input, select {
+        input[type="text"], input[type="number"] {
             padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
             width: 100%;
-            max-width: 300px;
-            margin-bottom: 10px;
         }
         button {
-            padding: 10px 15px;
-            background-color: #28a745;
+            padding: 10px;
+            background-color: #007bff;
             color: white;
             border: none;
+            border-radius: 5px;
+            font-size: 16px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #218838;
+            background-color: #0056b3;
         }
-        #responseMessage {
-            display: none;
-            margin-top: 10px;
+        .message {
+            margin-top: 20px;
             padding: 10px;
-            border: 1px solid transparent;
-            border-radius: 5px;
-        }
-        .success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-        }
-        .error {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
+            border: 1px solid #007bff;
+            color: #007bff;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <h1>Warehouse Management</h1>
-
-    <form id="orderForm">
-        <label for="productName">Product ID:</label>
-        <input type="number" id="productName" required>
-
-        <label for="productQuantity">Quantity:</label>
-        <input type="number" id="productQuantity" required>
-
-        <button type="submit">Submit Order</button>
-    </form>
-
-    <div id="responseMessage" class="success"></div>
+    <div class="container">
+        <h1>Warehouse Management</h1>
+        <form id="orderForm">
+            <input type="text" id="productName" placeholder="Enter Product Name" required>
+            <input type="number" id="productQuantity" placeholder="Enter Product Quantity" required>
+            <button type="submit">Submit Order</button>
+        </form>
+        <div id="responseMessage" class="message"></div>
+    </div>
 
     <script>
-        document.getElementById('orderForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+document.getElementById('orderForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
 
-            const productId = document.getElementById('productName').value;
-            const productQuantity = document.getElementById('productQuantity').value;
+    const productName = document.getElementById('productName').value;
+    const productQuantity = document.getElementById('productQuantity').value;
 
-            try {
-                const response = await fetch('/', {  // Измените на '/' для корневого маршрута
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        items: [{ product_id: productId, quantity: productQuantity }]
-                    })
-                });
-
-                const data = await response.json();
-
-                const messageDiv = document.getElementById('responseMessage');
-                messageDiv.style.display = 'block';
-
-                if (response.ok) {
-                    messageDiv.innerText = 'Order submitted successfully! Order ID: ' + data.id;
-                    messageDiv.className = 'success';
-                } else {
-                    messageDiv.innerText = 'Error: ' + data.detail;
-                    messageDiv.className = 'error';
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                const messageDiv = document.getElementById('responseMessage');
-                messageDiv.style.display = 'block';
-                messageDiv.innerText = 'Failed to connect to the server.';
-                messageDiv.className = 'error';
-            }
+    try {
+        const response = await fetch('/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                items: [{ product_id: productName, quantity: productQuantity }]
+            })
         });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            document.getElementById('responseMessage').innerText = 'Order submitted successfully!';
+        } else {
+            document.getElementById('responseMessage').innerText = 'Error: ' + data.detail;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('responseMessage').innerText = 'Failed to connect to the server.';
+    }
+});
     </script>
 </body>
 </html>
