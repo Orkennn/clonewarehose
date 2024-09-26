@@ -8,7 +8,7 @@ from .dependencies import order_by_id
 router = APIRouter(tags=["Orders"])
 
 
-@router.post("", response_model=Order, status_code=status.HTTP_201_CREATED)
+@router.post("/orders", response_model=Order, status_code=status.HTTP_201_CREATED)
 async def create_order(
     order_in: OrderCreate,
     session: AsyncSession = Depends(db_helper.session_dependency)
