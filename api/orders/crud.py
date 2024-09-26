@@ -87,7 +87,7 @@ async def get_order(session: AsyncSession, order_id: int) -> Order:
     return order_data
 
 
-async def update_order_status(session: AsyncSession, order_id: int, current_status: str) -> str:
+async def update_order_status(session: AsyncSession, order_id: int, new_status: str) -> str:
     stmt = select(Order.status).where(Order.id == order_id)
     result = await session.execute(stmt)
     order_status = result.scalar_one_or_none()
@@ -95,11 +95,11 @@ async def update_order_status(session: AsyncSession, order_id: int, current_stat
     if order_status is None:
         raise HTTPException(status_code=404, detail="Order not found")
 
-    if current_status == order_status:
+    if new_status == order_status:
         return "Same status as it was before, please choose a new one"
 
     update_stmt = (
-        update(Order).where(Order.id == order_id).values(status=current_status)
+        update(Order).where(Order.id == order_id).values(status=new_status)
     )
     await session.execute(update_stmt)
     await session.commit()
