@@ -12,11 +12,11 @@ class Setting(BaseSettings):
 
     @property
     def db_url(self) -> str:
-        return f"postgresql+asyncpg://{self.db_user}:{self.db_password}@database:5432/{self.db_name}"
+        return f"postgresql+asyncpg://{self.db_user}:{self.db_password}@clonewarehose-database-1:5432/{self.db_name}"
 
     @property
     def db_url_sync(self) -> str:
-        return f"postgresql+psycopg2://{self.db_user}:{self.db_password}@database:5432/{self.db_name}"
+        return f"postgresql+psycopg2://{self.db_user}:{self.db_password}@clonewarehose-database-1:5432/{self.db_name}"
 
     db_echo: bool = False
 
