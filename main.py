@@ -12,7 +12,7 @@ app = FastAPI()
 app.include_router(router=router_v1, prefix=settings.api_prefix)
 
 
-templates = Jinja2Templates(directory="C:/Users/BOTA/PycharmProjects/XSSATACK/clonewarehose/templates")
+templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/", response_class=HTMLResponse)
