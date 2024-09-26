@@ -15,6 +15,11 @@ app.include_router(router=router_v1, prefix=settings.api_prefix)
 templates = Jinja2Templates(directory="templates")
 
 
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    return templates.TemplateResponse("error.html", {"request": request, "error": str(exc)})
+
+
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
