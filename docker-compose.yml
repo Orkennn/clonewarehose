@@ -20,7 +20,7 @@ services:
       DB_USER: username1
       DB_PASSWORD: password123
       DB_NAME: database
-      DB_URL: postgres+psycopg2://username1:password123@clonewarehose-database-1:5433/database
+      DB_URL: postgres+psycopg2://username1:password123@database:5433/database
     ports:
       - "8000:8000"
 
