@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: database
+      POSTGRES_USER: username1
+      POSTGRES_PASSWORD: password123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  app:
+    build: .
+    depends_on:
+      - database
+    environment:
+      DB_USER: username1
+      DB_PASSWORD: password123
+      DB_NAME: database
+      DB_URL: postgres+psycopg2://username1:password123@localhost:5433/database
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
