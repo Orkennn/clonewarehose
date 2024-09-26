@@ -29,8 +29,8 @@ async def get_order(order: Order = Depends(order_by_id)):
 @router.patch("/{order_id}/status", response_model=str)
 async def update_order_status(
     order_id: int,
-    current_status: str,
+    new_status: str,
     session: AsyncSession = Depends(db_helper.session_dependency)
 ) -> str:
-    return await crud.update_order_status(session=session, order_id=order_id, current_status=current_status)
+    return await crud.update_order_status(session=session, order_id=order_id, new_status=new_status)
 
