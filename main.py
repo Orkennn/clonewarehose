@@ -24,7 +24,6 @@ async def global_exception_handler(request: Request, exc: Exception):
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-
 @app.get("/hello/{name}")
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
